@@ -7,6 +7,7 @@
     <title>Test</title>
 </head>
 <body>
+    @include('layout.test2')
     <h1>Test</h1>
     <p>my</p>
     <img src="images/test.png" alt="My Image" width="250px">
