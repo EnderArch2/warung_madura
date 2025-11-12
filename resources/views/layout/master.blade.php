@@ -19,7 +19,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="layout/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="layout/assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://img1.picmix.com/output/stamp/normal/1/6/0/4/2544061_df45b.png">
   <title>
     Warung Madura - {{$title}}
   </title>

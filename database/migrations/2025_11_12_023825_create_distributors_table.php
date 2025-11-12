@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('distributors', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_distributor', 50);
-            $table->string('alamat_distributor', 255);
-            $table->string('notelepon_distributor', 15);
+            $table->string('name', 50);
+            $table->string('address', 255);
+            $table->string('phone_number', 15);
             $table->timestamps();
         });
     }
