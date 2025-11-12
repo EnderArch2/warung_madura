@@ -43,7 +43,7 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="layout/assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+        <img id="logo-image" src="https://img1.picmix.com/output/stamp/normal/1/6/0/4/2544061_df45b.png" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold">Warung Madura</span>
       </a>
     </div>
@@ -318,6 +318,25 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="layout/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+
+  <!-- Logo Image Cycling Script -->
+  <script>
+    (function() {
+      const images = [
+        'https://img1.picmix.com/output/stamp/normal/1/6/0/4/2544061_df45b.png',
+        'https://img1.picmix.com/output/stamp/normal/1/4/3/7/2757341_05372.png'
+      ];
+
+      let currentIndex = 0;
+      const logoImage = document.getElementById('logo-image');
+
+      // Cycle through images every second
+      setInterval(function() {
+        currentIndex = (currentIndex + 1) % images.length;
+        logoImage.src = images[currentIndex];
+      }, 1000);
+    })();
+  </script>
 </body>
 
 </html>
