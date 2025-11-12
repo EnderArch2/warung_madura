@@ -119,6 +119,19 @@
                             d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
                     </svg>
                 </div>
+                <span class="nav-link-text ms-1">Courier</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  " href="../pages/rtl.html">
+                <div
+                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#67748e"
+                        class="bi bi-heart-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                    </svg>
+                </div>
                 <span class="nav-link-text ms-1">Users</span>
             </a>
         </li>
