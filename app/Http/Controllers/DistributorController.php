@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Distributor;
 use Illuminate\Http\Request;
 
 class DistributorController extends Controller
@@ -12,7 +12,8 @@ class DistributorController extends Controller
     public function index()
     {
         return view('distributors.index', [
-            'title' => 'Distributors'
+            'title' => 'Distributors',
+            'data' => Distributor::all()
         ]);
     }
 
