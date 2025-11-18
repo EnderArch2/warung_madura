@@ -16,3 +16,5 @@ Route::get('/', function () {
 
 Route::resource('/dashboard', App\Http\Controllers\DashboardController::class);
 Route::resource('/test', App\Http\Controllers\TestController::class);
+
+Route::get('/test', [TestController::class, 'index']);
