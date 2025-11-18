@@ -11,7 +11,9 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        //
+        return view('distributors.index', [
+            'title' => 'Distributors'
+        ]);
     }
 
     /**

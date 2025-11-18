@@ -43,9 +43,8 @@
     <!-- Navbar -->
     @if ($title == 'Dashboard')
         @yield('dashboard')
-    @else
-        <h1>Title bukan Dashboard!</h1>
-        <h1>tapi {{$title}}</h1>
+    @elseif ($title == 'Distributors')
+        @yield('distributors')
     @endif
 
   </main>
