@@ -4,19 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class TestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    protected $apiMessage = 'Hello from API';
+    public function index(Request $request)
     {
-        $apiMessage = 'Hello from API';
-        return view('test.index', [
-            'message' => $apiMessage
-        ]);
-    }
+        $data = [
+            'message' => $this->apiMessage
+        ];
 
+        if($request->wantsJson()) {
+            return response()->json($data);
+        }
+
+        return view('test.index', $data);
+    }
     /**
      * Show the form for creating a new resource.
      */
