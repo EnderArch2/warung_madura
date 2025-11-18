@@ -11,9 +11,10 @@ class TestController extends Controller
      */
     public function index()
     {
-       return [
-        'message' => 'hello world'
-       ];
+        $apiMessage = 'Hello from API';
+        return view('test.index', [
+            'message' => $apiMessage
+        ]);
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,7 +16,6 @@ Route::get('/', function () {
 //     return view('dashboard');
 // });
 
-Route::resource('/dashboard', App\Http\Controllers\DashboardController::class);
-Route::resource('/test', App\Http\Controllers\TestController::class);
-
-Route::get('/test', [TestController::class, 'index']);
+Route::resource('/dashboard', DashboardController::class);
+Route::resource('/test', TestController::class);
+// Route::get('/test', [TestController::class, 'index']);
