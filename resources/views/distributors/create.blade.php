@@ -56,7 +56,8 @@
                                 <a class="dropdown-item border-radius-md" href="javascript:;">
                                     <div class="d-flex py-1">
                                         <div class="my-auto">
-                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}" class="avatar avatar-sm  me-3 ">
+                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}"
+                                                class="avatar avatar-sm  me-3 ">
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
                                             <h6 class="text-sm font-weight-normal mb-1">
@@ -138,48 +139,37 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>{{$title}} table</h6>
+                        <h6>Create New {{ $title }}</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <a class="btn bg-gradient-dark mb-3" href="{{ route('distributors.create') }}"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New Dustributor</a>
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            No.</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Distribution Name</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Address</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Phone Number</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $no => $data)
-                                    <tr>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $no + 1 }}.
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->name }}
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->address }}
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->phone_number }}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
+                            <div class="card-body" style="width: 700px">
+                                <form role="form" id="distributorForm">
+                                    <label>Name</label>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="name" placeholder="Input Distributor's Name"
+                                            aria-label="Name" aria-describedby="name-addon" required>
+                                    </div>
+                                    <label>Address</label>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" id="address"
+                                            placeholder="Input Distributor's Address" aria-label="Address"
+                                            aria-describedby="address-addon" required></textarea>
+                                    </div>
+                                    <label>Phone Number</label>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="phone"
+                                            placeholder="Input Distributor's Phone Number" aria-label="PhoneNumber"
+                                            aria-describedby="phoneNumber-addon" required>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="button" class="btn bg-gradient-danger mt-4 mb-0" id="cancelBtn"
+                                            style="justify-self: flex-end">Cancel</button>
+                                        <button type="button" class="btn bg-gradient-info mt-4 mb-0" id="submitBtn"
+                                            style="justify-self: flex-end">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -225,3 +215,75 @@
         </footer>
     </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will discard all changes!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Reset form and redirect or go back
+                document.getElementById('distributorForm').reset();
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Form has been reset.',
+                    icon: 'success',
+                    timer: 1500
+                }).then(() => {
+                    window.history.back();
+                });
+            }
+        });
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        const name = document.getElementById('name').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        // Validation
+        if (!name || !address || !phone) {
+            Swal.fire({
+                title: 'Validation Error',
+                text: 'Please fill in all required fields!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Confirm Submission',
+            text: 'Are you sure you want to submit this distributor data?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Here you would normally submit the form via AJAX or traditional submission
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Distributor has been created successfully!',
+                    icon: 'success',
+                    timer: 2000
+                }).then(() => {
+                    // Uncomment the line below when you have a backend endpoint ready
+                    // submitForm();
+                    window.history.back();
+                });
+            }
+        });
+    });
+</script>
+@endpush
