@@ -12,14 +12,23 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     *
+     * $this->call() runs other Seeders in the order listed.
+     * This is the "master" seeder — think of it as an orchestrator.
+     * Order matters if seeders have foreign key dependencies
+     * (e.g., ProductSeeder must run before SaleDetailSeeder).
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
+            'name'  => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        $this->call([
+            ProductSeeder::class,
+            SaleSeeder::class,  // Must run AFTER ProductSeeder — sale_details references products.serial_number
         ]);
     }
 }
+

@@ -45,7 +45,11 @@
         @yield('dashboard')
     @elseif ($title == 'Distributors')
         @yield('distributors')
+    @elseif ($title == 'Products')
+        @yield('products')
     @endif
+    
+    @yield('content')
 
   </main>
   <div class="fixed-plugin">
@@ -121,73 +125,59 @@
   <script src="{{ asset('layout/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('layout/assets/js/plugins/chartjs.min.js') }}"></script>
   <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
+    // Guard: only initialise charts on the Dashboard page where the canvas elements exist.
+    // Without this check, Chart.js throws "Cannot read properties of null" on every other page.
+    if (document.getElementById("chart-bars")) {
 
+    {{--
+      @json($barLabels) converts the PHP array ['Mar','Apr',...] to a JavaScript array.
+      This is the RECOMMENDED way to pass PHP data to JavaScript in Laravel.
+      It's safe: @json() automatically escapes HTML entities to prevent XSS attacks.
+      Alternative (WRONG): data: [<?= implode(',', $barData) ?>]  → vulnerable to injection
+    --}}
+    var ctx = document.getElementById("chart-bars").getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: {!! json_encode($barLabels ?? ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov']) !!},
         datasets: [{
-          label: "Sales",
+          label: "Transactions",
           tension: 0.4,
           borderWidth: 0,
           borderRadius: 4,
           borderSkipped: false,
           backgroundColor: "#fff",
-          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+          data: {!! json_encode($barData ?? [2, 3, 3, 2, 3, 3, 2, 3, 4]) !!},
           maxBarThickness: 6
-        }, ],
+        }],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            display: false,
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: context => context.parsed.y + ' transactions'
+            }
           }
         },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
+        interaction: { intersect: false, mode: 'index' },
         scales: {
           y: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 15,
-              font: {
-                size: 14,
-                family: "Open Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
+            grid: { drawBorder: false, display: false, drawOnChartArea: false, drawTicks: false },
+            ticks: { suggestedMin: 0, beginAtZero: true, padding: 15, font: { size: 14, family: "Open Sans", style: 'normal', lineHeight: 2 }, color: "#fff" },
           },
           x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false
-            },
-            ticks: {
-              display: false
-            },
+            grid: { drawBorder: false, display: false, drawOnChartArea: false, drawTicks: false },
+            ticks: { display: false },
           },
         },
       },
     });
+    } // end chart-bars guard
 
-
+    if (document.getElementById("chart-line")) {
     var ctx2 = document.getElementById("chart-line").getContext("2d");
 
     var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
@@ -205,9 +195,9 @@
     new Chart(ctx2, {
       type: "line",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: {!! json_encode($lineLabels ?? ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov']) !!},
         datasets: [{
-            label: "Mobile apps",
+            label: "Revenue (Rp ribu)",
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
@@ -215,12 +205,11 @@
             borderWidth: 3,
             backgroundColor: gradientStroke1,
             fill: true,
-            data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+            data: {!! json_encode($lineRevenue ?? [50, 80, 120, 90, 150, 200, 180, 220, 280]) !!},
             maxBarThickness: 6
-
           },
           {
-            label: "Websites",
+            label: "Items Sold",
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
@@ -228,7 +217,7 @@
             borderWidth: 3,
             backgroundColor: gradientStroke2,
             fill: true,
-            data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+            data: {!! json_encode($lineItemsQty ?? [30, 50, 80, 60, 100, 120, 110, 140, 160]) !!},
             maxBarThickness: 6
           },
         ],
@@ -289,6 +278,7 @@
         },
       },
     });
+    } // end chart-line guard
   </script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;

@@ -14,17 +14,17 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../pages/dashboard.html">
+            <a class="nav-link @if ($title === 'Products') active @endif" href="{{ route('products.index') }}">
                 <div
                     class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18px" height="18px"
                         viewBox="0 0 18 18">
                         <path
                             d="M11.25,5.5c-.414,0-.75-.336-.75-.75v-1.75c0-.827-.673-1.5-1.5-1.5s-1.5,.673-1.5,1.5v1.75c0,.414-.336,.75-.75,.75s-.75-.336-.75-.75v-1.75c0-1.654,1.346-3,3-3s3,1.346,3,3v1.75c0,.414-.336,.75-.75,.75Z"
-                            fill="#67748e" data-color="color-2"></path>
+                            fill="@if ($title === 'Products') white @else #67748e @endif" data-color="color-2"></path>
                         <path
                             d="M15.406,6.512c-.125-1.432-1.302-2.512-2.739-2.512H5.333c-1.437,0-2.615,1.08-2.739,2.512l-.652,7.5c-.067,.766,.193,1.53,.712,2.097s1.258,.892,2.027,.892H13.318c.769,0,1.508-.325,2.027-.892s.779-1.331,.712-2.097l-.652-7.5Z"
-                            fill="#67748e"></path>
+                            fill="@if ($title === 'Products') white @else #67748e @endif"></path>
                     </svg>
                 </div>
                 <span class="nav-link-text ms-1">Products</span>
@@ -84,10 +84,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link  " href="../pages/rtl.html">
+            <a class="nav-link @if (request()->routeIs('sales.*')) active @endif" href="{{ route('sales.index') }}">
                 <div
                     class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#67748e"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@if (request()->routeIs('sales.*')) white @else #67748e @endif"
                         class="bi bi-cash-stack" viewBox="0 0 16 16">
                         <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
                         <path
@@ -277,39 +277,20 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link  " href="../pages/profile.html">
+            <a class="nav-link @if (request()->routeIs('sale-reports.*')) active @endif" href="{{ route('sale-reports.index') }}">
                 <div
                     class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="57px" height="57px"
                         viewBox="0 0 18 18">
                         <rect x="12.5" y="2" width="4" height="14" rx="1.75" ry="1.75"
-                            fill="#1c1f21"></rect>
+                            fill="@if (request()->routeIs('sale-reports.*')) white @else #1c1f21 @endif"></rect>
                         <rect x="7" y="7" width="4" height="9" rx="1.75" ry="1.75"
-                            fill="#1c1f21"></rect>
+                            fill="@if (request()->routeIs('sale-reports.*')) white @else #1c1f21 @endif"></rect>
                         <rect x="1.5" y="11" width="4" height="5" rx="1.75" ry="1.75"
-                            fill="#1c1f21"></rect>
+                            fill="@if (request()->routeIs('sale-reports.*')) white @else #1c1f21 @endif"></rect>
                         <path
                             d="M2.75,9.5c.192,0,.384-.073,.53-.22l4.72-4.72v.689c0,.414,.336,.75,.75,.75s.75-.336,.75-.75V2.75c0-.414-.336-.75-.75-.75h-2.5c-.414,0-.75,.336-.75,.75s.336,.75,.75,.75h.689L2.22,8.22c-.293,.293-.293,.768,0,1.061,.146,.146,.338,.22,.53,.22Z"
-                            fill="#1c1f21" data-color="color-2"></path>
-                    </svg>
-                    <title>customer-support</title>
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                            <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(1.000000, 0.000000)">
-                                    <path class="color-background opacity-6"
-                                        d="M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725 25.553,20.895 C25.694,20.965 25.848,21 26,21 C26.212,21 26.424,20.933 26.6,20.8 L34.333,15 L45,15 C45.553,15 46,14.553 46,14 L46,1 C46,0.447 45.553,0 45,0 Z">
-                                    </path>
-                                    <path class="color-background"
-                                        d="M22.883,32.86 C20.761,32.012 17.324,31 13,31 C8.676,31 5.239,32.012 3.116,32.86 C1.224,33.619 0,35.438 0,37.494 L0,41 C0,41.553 0.447,42 1,42 L25,42 C25.553,42 26,41.553 26,41 L26,37.494 C26,35.438 24.776,33.619 22.883,32.86 Z">
-                                    </path>
-                                    <path class="color-background"
-                                        d="M13,28 C17.432,28 21,22.529 21,18 C21,13.589 17.411,10 13,10 C8.589,10 5,13.589 5,18 C5,22.529 8.568,28 13,28 Z">
-                                    </path>
-                                </g>
-                            </g>
-                        </g>
-                    </g>
+                            fill="@if (request()->routeIs('sale-reports.*')) white @else #1c1f21 @endif" data-color="color-2"></path>
                     </svg>
                 </div>
                 <span class="nav-link-text ms-1">Sale Reports</span>

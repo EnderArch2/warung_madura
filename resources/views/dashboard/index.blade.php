@@ -129,10 +129,21 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Money</p>
+                    {{--
+                      Today's revenue from the sales table.
+                      number_format(x, 0, ',', '.') → formats 175000 as "175.000"
+                      This uses the Indonesian number format (dot as thousand separator).
+                    --}}
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Revenue</p>
                     <h5 class="font-weight-bolder mb-0">
-                      $53,000
-                      <span class="text-success text-sm font-weight-bolder">+55%</span>
+                      Rp {{ number_format($todayRevenue, 0, ',', '.') }}
+                      @if($revenueChange > 0)
+                        <span class="text-success text-sm font-weight-bolder">+{{ $revenueChange }}%</span>
+                      @elseif($revenueChange < 0)
+                        <span class="text-danger text-sm font-weight-bolder">{{ $revenueChange }}%</span>
+                      @else
+                        <span class="text-secondary text-sm font-weight-bolder">—</span>
+                      @endif
                     </h5>
                   </div>
                 </div>
@@ -151,10 +162,14 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Users</p>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Products</p>
                     <h5 class="font-weight-bolder mb-0">
-                      2,300
-                      <span class="text-success text-sm font-weight-bolder">+3%</span>
+                      {{ $totalProducts }}
+                      @if($lowStockCount > 0)
+                        <span class="text-danger text-sm font-weight-bolder">{{ $lowStockCount }} low</span>
+                      @else
+                        <span class="text-success text-sm font-weight-bolder">All OK</span>
+                      @endif
                     </h5>
                   </div>
                 </div>
@@ -173,10 +188,16 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">New Clients</p>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">This Month's Sales</p>
                     <h5 class="font-weight-bolder mb-0">
-                      +3,462
-                      <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                      {{ $thisMonthSalesCount }} transactions
+                      @if($salesCountChange > 0)
+                        <span class="text-success text-sm font-weight-bolder">+{{ $salesCountChange }}%</span>
+                      @elseif($salesCountChange < 0)
+                        <span class="text-danger text-sm font-weight-bolder">{{ $salesCountChange }}%</span>
+                      @else
+                        <span class="text-secondary text-sm font-weight-bolder">—</span>
+                      @endif
                     </h5>
                   </div>
                 </div>
@@ -195,10 +216,16 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Sales</p>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">This Month Revenue</p>
                     <h5 class="font-weight-bolder mb-0">
-                      $103,430
-                      <span class="text-success text-sm font-weight-bolder">+5%</span>
+                      Rp {{ number_format($thisMonthRevenue, 0, ',', '.') }}
+                      @if($revenueMonthChange > 0)
+                        <span class="text-success text-sm font-weight-bolder">+{{ $revenueMonthChange }}%</span>
+                      @elseif($revenueMonthChange < 0)
+                        <span class="text-danger text-sm font-weight-bolder">{{ $revenueMonthChange }}%</span>
+                      @else
+                        <span class="text-secondary text-sm font-weight-bolder">—</span>
+                      @endif
                     </h5>
                   </div>
                 </div>
@@ -333,10 +360,21 @@
         <div class="col-lg-7">
           <div class="card z-index-2">
             <div class="card-header pb-0">
-              <h6>Sales overview</h6>
+              <h6>Sales Overview</h6>
               <p class="text-sm">
-                <i class="fa fa-arrow-up text-success"></i>
-                <span class="font-weight-bold">4% more</span> in 2021
+                @php
+                  // Calculate overall trend by comparing first 3 months vs last 3 months of chart data
+                  $firstHalf = array_sum(array_slice($lineRevenue, 0, 4));
+                  $lastHalf  = array_sum(array_slice($lineRevenue, 5, 4));
+                  $trend = $firstHalf > 0 ? round((($lastHalf - $firstHalf) / $firstHalf) * 100) : 0;
+                @endphp
+                @if($trend >= 0)
+                  <i class="fa fa-arrow-up text-success"></i>
+                  <span class="font-weight-bold">{{ $trend }}% more</span> in {{ now()->year }}
+                @else
+                  <i class="fa fa-arrow-down text-danger"></i>
+                  <span class="font-weight-bold">{{ abs($trend) }}% less</span> in {{ now()->year }}
+                @endif
               </p>
             </div>
             <div class="card-body p-3">
@@ -353,23 +391,11 @@
             <div class="card-header pb-0">
               <div class="row">
                 <div class="col-lg-6 col-7">
-                  <h6>Projects</h6>
+                  <h6>Top Selling Products</h6>
                   <p class="text-sm mb-0">
                     <i class="fa fa-check text-info" aria-hidden="true"></i>
-                    <span class="font-weight-bold ms-1">30 done</span> this month
+                    <span class="font-weight-bold ms-1">Last 9 months</span> by quantity sold
                   </p>
-                </div>
-                <div class="col-lg-6 col-5 my-auto text-end">
-                  <div class="dropdown float-lg-end pe-4">
-                    <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa fa-ellipsis-v text-secondary"></i>
-                    </a>
-                    <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
-                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a></li>
-                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Another action</a></li>
-                      <li><a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a></li>
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>
@@ -378,244 +404,43 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Companies</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Members</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Budget</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Completion</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qty Sold</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Revenue</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {{--
+                      $topProducts comes from DashboardController — a grouped SaleDetail query
+                      with eager-loaded product relationship.
+                      WHY with(['product'])?
+                      Without eager loading: each $item->product triggers a separate SQL query.
+                      With eager loading: all products loaded in 1 extra SQL query total.
+                      This is the N+1 problem fix.
+                    --}}
+                    @forelse ($topProducts as $item)
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
-                          </div>
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
+                            <h6 class="mb-0 text-sm">{{ $item->product->name ?? $item->serial_number_product }}</h6>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="layout/assets/img/team-1.jpg" alt="team1">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="layout/assets/img/team-2.jpg" alt="team2">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith">
-                            <img src="layout/assets/img/team-3.jpg" alt="team3">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="layout/assets/img/team-4.jpg" alt="team4">
-                          </a>
-                        </div>
+                        <p class="text-xs font-weight-bold mb-0">{{ $item->product->type ?? '—' }}</p>
                       </td>
                       <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> $14,000 </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">60%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-info w-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-atlassian.svg" class="avatar avatar-sm me-3" alt="atlassian">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Add Progress Track</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="layout/assets/img/team-2.jpg" alt="team5">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="layout/assets/img/team-4.jpg" alt="team6">
-                          </a>
-                        </div>
+                        <span class="badge badge-sm bg-gradient-info">{{ number_format($item->total_qty) }} units</span>
                       </td>
                       <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> $3,000 </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">10%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-info w-10" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
+                        <span class="text-xs font-weight-bold">Rp {{ number_format($item->total_revenue, 0, ',', '.') }}</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm me-3" alt="team7">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="layout/assets/img/team-3.jpg" alt="team8">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="layout/assets/img/team-1.jpg" alt="team9">
-                          </a>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> Not set </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">100%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm me-3" alt="spotify">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="layout/assets/img/team-4.jpg" alt="user1">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Romina Hadid">
-                            <img src="layout/assets/img/team-3.jpg" alt="user2">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Alexander Smith">
-                            <img src="layout/assets/img/team-4.jpg" alt="user3">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="layout/assets/img/team-1.jpg" alt="user4">
-                          </a>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> $20,500 </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">100%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-jira.svg" class="avatar avatar-sm me-3" alt="jira">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="layout/assets/img/team-4.jpg" alt="user5">
-                          </a>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> $500 </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">25%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-info w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="25"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="layout/assets/img/small-logos/logo-invision.svg" class="avatar avatar-sm me-3" alt="invision">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="avatar-group mt-2">
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Tompson">
-                            <img src="layout/assets/img/team-1.jpg" alt="user6">
-                          </a>
-                          <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Jessica Doe">
-                            <img src="layout/assets/img/team-4.jpg" alt="user7">
-                          </a>
-                        </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="text-xs font-weight-bold"> $2,000 </span>
-                      </td>
-                      <td class="align-middle">
-                        <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage">
-                              <span class="text-xs font-weight-bold">40%</span>
-                            </div>
-                          </div>
-                          <div class="progress">
-                            <div class="progress-bar bg-gradient-info w-40" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40"></div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                    @empty
+                    <tr><td colspan="4" class="text-center py-3 text-muted">No sales data yet.</td></tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
@@ -625,68 +450,44 @@
         <div class="col-lg-4 col-md-6">
           <div class="card h-100">
             <div class="card-header pb-0">
-              <h6>Orders overview</h6>
+              <h6>Recent Sales</h6>
               <p class="text-sm">
                 <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                <span class="font-weight-bold">24%</span> this month
+                <span class="font-weight-bold">{{ $thisMonthSalesCount }}</span> transactions this month
               </p>
             </div>
             <div class="card-body p-3">
               <div class="timeline timeline-one-side">
-                <div class="timeline-block mb-3">
-                  <span class="timeline-step">
-                    <i class="ni ni-bell-55 text-success text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">$2400, Design changes</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">22 DEC 7:20 PM</p>
+                {{--
+                  $recentSales is eager-loaded with saleDetails.product.
+                  WHY @foreach with $loop->last?
+                  $loop->last is true only on the final iteration — we use it
+                  to skip the mb-3 margin on the last timeline item (cleaner UI).
+                --}}
+                @forelse ($recentSales as $sale)
+                  <div class="timeline-block {{ $loop->last ? '' : 'mb-3' }}">
+                    <span class="timeline-step">
+                      {{-- Rotate icon colors using $loop->index modulo --}}
+                      @php
+                        $icons = ['ni-bell-55 text-success','ni-html5 text-danger','ni-cart text-info','ni-credit-card text-warning','ni-key-25 text-primary','ni-money-coins text-dark'];
+                        $icon  = $icons[$loop->index % count($icons)];
+                      @endphp
+                      <i class="ni {{ $icon }} text-gradient"></i>
+                    </span>
+                    <div class="timeline-content">
+                      <h6 class="text-dark text-sm font-weight-bold mb-0">
+                        Rp {{ number_format($sale->total_price, 0, ',', '.') }}
+                        — {{ $sale->saleDetails->count() }} item(s)
+                      </h6>
+                      <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                        {{-- Carbon format: 'd M Y' → '28 Nov 2025' --}}
+                        {{ $sale->sale_date->format('d M Y') }}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div class="timeline-block mb-3">
-                  <span class="timeline-step">
-                    <i class="ni ni-html5 text-danger text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">New order #1832412</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">21 DEC 11 PM</p>
-                  </div>
-                </div>
-                <div class="timeline-block mb-3">
-                  <span class="timeline-step">
-                    <i class="ni ni-cart text-info text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">Server payments for April</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">21 DEC 9:34 PM</p>
-                  </div>
-                </div>
-                <div class="timeline-block mb-3">
-                  <span class="timeline-step">
-                    <i class="ni ni-credit-card text-warning text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">New card added for order #4395133</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">20 DEC 2:20 AM</p>
-                  </div>
-                </div>
-                <div class="timeline-block mb-3">
-                  <span class="timeline-step">
-                    <i class="ni ni-key-25 text-primary text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">Unlock packages for development</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">18 DEC 4:54 AM</p>
-                  </div>
-                </div>
-                <div class="timeline-block">
-                  <span class="timeline-step">
-                    <i class="ni ni-money-coins text-dark text-gradient"></i>
-                  </span>
-                  <div class="timeline-content">
-                    <h6 class="text-dark text-sm font-weight-bold mb-0">New order #9583120</h6>
-                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">17 DEC</p>
-                  </div>
-                </div>
+                @empty
+                  <p class="text-sm text-muted">No sales recorded yet.</p>
+                @endforelse
               </div>
             </div>
           </div>
