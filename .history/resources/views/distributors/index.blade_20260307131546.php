@@ -56,8 +56,7 @@
                                 <a class="dropdown-item border-radius-md" href="javascript:;">
                                     <div class="d-flex py-1">
                                         <div class="my-auto">
-                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}"
-                                                class="avatar avatar-sm  me-3 ">
+                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}" class="avatar avatar-sm  me-3 ">
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
                                             <h6 class="text-sm font-weight-normal mb-1">
@@ -139,49 +138,63 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Create New {{ $title }}</h6>
+                        <h6>{{$title}} table</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <div class="card-body" style="width: 700px">
-                                @if(
-                                    $errors->any()
-                                )
-                                    <div class="alert alert-danger">
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                <form role="form" id="distributorForm" action="{{ route('distributors.store') }}" method="POST">
-                                    @csrf
-                                    <label>Name</label>
-                                    <div class="mb-3">
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="Input Distributor's Name"
-                                            aria-label="Name" aria-describedby="name-addon" required>
-                                    </div>
-                                    <label>Address</label>
-                                    <div class="mb-3">
-                                        <textarea name="address" class="form-control" id="address"
-                                            placeholder="Input Distributor's Address" aria-label="Address"
-                                            aria-describedby="address-addon" required></textarea>
-                                    </div>
-                                    <label>Phone Number</label>
-                                    <div class="mb-3">
-                                        <input type="text" name="phone_number" class="form-control" id="phone"
-                                            placeholder="Input Distributor's Phone Number" aria-label="PhoneNumber"
-                                            aria-describedby="phoneNumber-addon" required>
-                                    </div>
-                                    <div class="text-end">
-                                        <button type="button" class="btn bg-gradient-danger mt-4 mb-0" id="cancelBtn"
-                                            style="justify-self: flex-end">Cancel</button>
-                                        <button type="submit" class="btn bg-gradient-info mt-4 mb-0" id="submitBtn"
-                                            style="justify-self: flex-end">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
+                            @if(session('success'))
+                                <div class="alert alert-success mx-4 mt-3" role="alert">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            <a class="btn bg-gradient-dark mb-3" href="{{ route('distributors.create') }}"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New Dustributor</a>
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            No.</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Distribution Name</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Address</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Phone Number</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $no => $data)
+                                    <tr>
+                                        <td class="text-xs font-weight-bold mb-8">
+                                            {{ $no + 1 }}.
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-8">
+                                            {{ $data->name }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-8">
+                                            {{ $data->address }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-8">
+                                            {{ $data->phone_number }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-8">
+                                            <a href="{{ route('distributors.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                            <form action="{{ route('distributors.destroy', $data->id) }}" method="POST" class="d-inline delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-sm btn-danger btn-delete" data-name="{{ $data->name }}">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -230,55 +243,14 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
 <script>
-    document.getElementById('cancelBtn').addEventListener('click', function() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will discard all changes!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, cancel it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // redirect back to index
-                window.location = "{{ route('distributors.index') }}";
-            }
-        });
-    });
-
-    // intercept form submit and show confirmation
-    document.getElementById('distributorForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const address = document.getElementById('address').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-
-        if (!name || !address || !phone) {
-            Swal.fire({
-                title: 'Validation Error',
-                text: 'Please fill in all required fields!',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-
-        Swal.fire({
-            title: 'Confirm Submission',
-            text: 'Are you sure you want to submit this distributor data?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, submit it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // submit the form normally so Laravel can handle it
-                e.target.submit();
-            }
-        });
+    Swal.fire({
+        title: 'Success',
+        text: '{{ session('success') }}',
+        icon: 'success',
+        confirmButtonText: 'OK'
     });
 </script>
+@endif
 @endpush

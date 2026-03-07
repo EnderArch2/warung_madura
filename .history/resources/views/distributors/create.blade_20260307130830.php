@@ -144,17 +144,6 @@
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <div class="card-body" style="width: 700px">
-                                @if(
-                                    $errors->any()
-                                )
-                                    <div class="alert alert-danger">
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
                                 <form role="form" id="distributorForm" action="{{ route('distributors.store') }}" method="POST">
                                     @csrf
                                     <label>Name</label>
@@ -242,19 +231,26 @@
             confirmButtonText: 'Yes, cancel it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // redirect back to index
-                window.location = "{{ route('distributors.index') }}";
+                // Reset form and redirect or go back
+                document.getElementById('distributorForm').reset();
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Form has been reset.',
+                    icon: 'success',
+                    timer: 1500
+                }).then(() => {
+                    window.history.back();
+                });
             }
         });
     });
 
-    // intercept form submit and show confirmation
-    document.getElementById('distributorForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    document.getElementById('submitBtn').addEventListener('click', function() {
         const name = document.getElementById('name').value.trim();
         const address = document.getElementById('address').value.trim();
         const phone = document.getElementById('phone').value.trim();
 
+        // Validation
         if (!name || !address || !phone) {
             Swal.fire({
                 title: 'Validation Error',
@@ -265,6 +261,7 @@
             return;
         }
 
+        // Show confirmation dialog
         Swal.fire({
             title: 'Confirm Submission',
             text: 'Are you sure you want to submit this distributor data?',
@@ -275,8 +272,17 @@
             confirmButtonText: 'Yes, submit it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // submit the form normally so Laravel can handle it
-                e.target.submit();
+                // Here you would normally submit the form via AJAX or traditional submission
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Distributor has been created successfully!',
+                    icon: 'success',
+                    timer: 2000
+                }).then(() => {
+                    // Uncomment the line below when you have a backend endpoint ready
+                    // submitForm();
+                    window.history.back();
+                });
             }
         });
     });

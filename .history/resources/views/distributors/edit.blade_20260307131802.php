@@ -139,7 +139,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Create New {{ $title }}</h6>
+                        <h6>Edit {{ $title }}</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
@@ -155,30 +155,31 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form role="form" id="distributorForm" action="{{ route('distributors.store') }}" method="POST">
+                                <form role="form" id="distributorForm" action="{{ route('distributors.update', $distributor->id) }}" method="POST">
                                     @csrf
+                                    @method('PUT')
                                     <label>Name</label>
                                     <div class="mb-3">
                                         <input type="text" name="name" class="form-control" id="name" placeholder="Input Distributor's Name"
-                                            aria-label="Name" aria-describedby="name-addon" required>
+                                            aria-label="Name" aria-describedby="name-addon" required value="{{ old('name', $distributor->name) }}">
                                     </div>
                                     <label>Address</label>
                                     <div class="mb-3">
                                         <textarea name="address" class="form-control" id="address"
                                             placeholder="Input Distributor's Address" aria-label="Address"
-                                            aria-describedby="address-addon" required></textarea>
+                                            aria-describedby="address-addon" required>{{ old('address', $distributor->address) }}</textarea>
                                     </div>
                                     <label>Phone Number</label>
                                     <div class="mb-3">
                                         <input type="text" name="phone_number" class="form-control" id="phone"
                                             placeholder="Input Distributor's Phone Number" aria-label="PhoneNumber"
-                                            aria-describedby="phoneNumber-addon" required>
+                                            aria-describedby="phoneNumber-addon" required value="{{ old('phone_number', $distributor->phone_number) }}">
                                     </div>
                                     <div class="text-end">
                                         <button type="button" class="btn bg-gradient-danger mt-4 mb-0" id="cancelBtn"
                                             style="justify-self: flex-end">Cancel</button>
                                         <button type="submit" class="btn bg-gradient-info mt-4 mb-0" id="submitBtn"
-                                            style="justify-self: flex-end">Submit</button>
+                                            style="justify-self: flex-end">Update</button>
                                     </div>
                                 </form>
                             </div>

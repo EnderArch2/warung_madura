@@ -144,40 +144,28 @@
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <div class="card-body" style="width: 700px">
-                                @if(
-                                    $errors->any()
-                                )
-                                    <div class="alert alert-danger">
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                <form role="form" id="distributorForm" action="{{ route('distributors.store') }}" method="POST">
-                                    @csrf
+                                <form role="form" id="distributorForm">
                                     <label>Name</label>
                                     <div class="mb-3">
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="Input Distributor's Name"
+                                        <input type="text" class="form-control" id="name" placeholder="Input Distributor's Name"
                                             aria-label="Name" aria-describedby="name-addon" required>
                                     </div>
                                     <label>Address</label>
                                     <div class="mb-3">
-                                        <textarea name="address" class="form-control" id="address"
+                                        <textarea class="form-control" id="address"
                                             placeholder="Input Distributor's Address" aria-label="Address"
                                             aria-describedby="address-addon" required></textarea>
                                     </div>
                                     <label>Phone Number</label>
                                     <div class="mb-3">
-                                        <input type="text" name="phone_number" class="form-control" id="phone"
+                                        <input type="text" class="form-control" id="phone_number"
                                             placeholder="Input Distributor's Phone Number" aria-label="PhoneNumber"
                                             aria-describedby="phoneNumber-addon" required>
                                     </div>
                                     <div class="text-end">
                                         <button type="button" class="btn bg-gradient-danger mt-4 mb-0" id="cancelBtn"
                                             style="justify-self: flex-end">Cancel</button>
-                                        <button type="submit" class="btn bg-gradient-info mt-4 mb-0" id="submitBtn"
+                                        <button type="button" class="btn bg-gradient-info mt-4 mb-0" id="submitBtn"
                                             style="justify-self: flex-end">Submit</button>
                                     </div>
                                 </form>
@@ -242,19 +230,26 @@
             confirmButtonText: 'Yes, cancel it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // redirect back to index
-                window.location = "{{ route('distributors.index') }}";
+                // Reset form and redirect or go back
+                document.getElementById('distributorForm').reset();
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Form has been reset.',
+                    icon: 'success',
+                    timer: 1500
+                }).then(() => {
+                    window.history.back();
+                });
             }
         });
     });
 
-    // intercept form submit and show confirmation
-    document.getElementById('distributorForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    document.getElementById('submitBtn').addEventListener('click', function() {
         const name = document.getElementById('name').value.trim();
         const address = document.getElementById('address').value.trim();
         const phone = document.getElementById('phone').value.trim();
 
+        // Validation
         if (!name || !address || !phone) {
             Swal.fire({
                 title: 'Validation Error',
@@ -265,6 +260,7 @@
             return;
         }
 
+        // Show confirmation dialog
         Swal.fire({
             title: 'Confirm Submission',
             text: 'Are you sure you want to submit this distributor data?',
@@ -275,8 +271,17 @@
             confirmButtonText: 'Yes, submit it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // submit the form normally so Laravel can handle it
-                e.target.submit();
+                // Here you would normally submit the form via AJAX or traditional submission
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Distributor has been created successfully!',
+                    icon: 'success',
+                    timer: 2000
+                }).then(() => {
+                    // Uncomment the line below when you have a backend endpoint ready
+                    // submitForm();
+                    window.history.back();
+                });
             }
         });
     });
