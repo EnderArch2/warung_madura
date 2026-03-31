@@ -20,14 +20,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name'  => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
+        // Order matters! Foreign keys must be satisfied
         $this->call([
-            ProductSeeder::class,
-            SaleSeeder::class,  // Must run AFTER ProductSeeder — sale_details references products.serial_number
+            UserSeeder::class,              // 1. Users (owner, admin, courier, customer)
+            DistributorSeeder::class,       // 2. Distributors
+            ExpeditionSeeder::class,        // 3. Expeditions
+            ProductSeeder::class,           // 4. Products
+            PurchaseSeeder::class,          // 5. Purchases (depends on Distributor)
+            PurchaseDetailSeeder::class,    // 6. Purchase details (depends on Purchase, Product)
+            OrderSeeder::class,             // 7. Orders (depends on User/Customer)
+            OrderDetailSeeder::class,       // 8. Order details (depends on Order, Product)
+            DeliverySeeder::class,          // 9. Deliveries (depends on Order, Expedition, User/Courier)
+            SaleSeeder::class,              // 10. Sales (depends on Product)
+            SaleDetailSeeder::class,        // 11. Sale details (depends on Sale, Product)
         ]);
     }
 }

@@ -124,10 +124,10 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link  " href="../pages/rtl.html">
+            <a class="nav-link @if ($title === 'Users' || str_contains($title, 'User')) active @endif" href="{{ route('users.index') }}">
                 <div
                     class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#67748e"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@if ($title === 'Users' || str_contains($title, 'User')) white @else #67748e @endif"
                         class="bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                     </svg>
@@ -295,6 +295,24 @@
                 </div>
                 <span class="nav-link-text ms-1">Sale Reports</span>
             </a>
+        </li>
+        <li class="nav-item mt-3">
+            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">ACCOUNT</h6>
+        </li>
+        <li class="nav-item">
+            <form method="POST" action="{{ route('logout') }}" class="d-flex align-items-center mb-0">
+                @csrf
+                <button type="submit" class="nav-link d-flex align-items-center w-100 border-0 bg-transparent p-0">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#67748e"
+                            class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 1h8A1.5 1.5 0 0 1 16 2.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 11.5v-2a.5.5 0 0 1 1 0z"/>
+                            <path fill-rule="evenodd" d="M.146 8.354l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </div>
+                    <span class="nav-link-text ms-1">Sign Out</span>
+                </button>
+            </form>
         </li>
     </ul>
 </div>

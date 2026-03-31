@@ -47,8 +47,10 @@
         @yield('distributors')
     @elseif ($title == 'Products')
         @yield('products')
+    @elseif (str_contains($title, 'User') || (isset($users) && is_object($users)))
+        @yield('users')
     @endif
-    
+
     @yield('content')
 
   </main>
