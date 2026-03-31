@@ -22,10 +22,6 @@
                 </div>
                 <ul class="navbar-nav  justify-content-end">
                     <li class="nav-item d-flex align-items-center">
-                        <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank"
-                            href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online Builder</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                             <i class="fa fa-user me-sm-1"></i>
                             <span class="d-sm-inline d-none">Sign In</span>
@@ -56,7 +52,8 @@
                                 <a class="dropdown-item border-radius-md" href="javascript:;">
                                     <div class="d-flex py-1">
                                         <div class="my-auto">
-                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}" class="avatar avatar-sm  me-3 ">
+                                            <img src="{{ asset('layout/assets/img/team-2.jpg') }}"
+                                                class="avatar avatar-sm  me-3 ">
                                         </div>
                                         <div class="d-flex flex-column justify-content-center">
                                             <h6 class="text-sm font-weight-normal mb-1">
@@ -138,16 +135,17 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>{{$title}} table</h6>
+                        <h6>{{ $title }} table</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            @if(session('success'))
+                            @if (session('success'))
                                 <div class="alert alert-success mx-4 mt-3" role="alert">
                                     {{ session('success') }}
                                 </div>
                             @endif
-                            <a class="btn bg-gradient-dark mb-3" href="{{ route('distributors.create') }}"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New Dustributor</a>
+                            <a class="btn bg-gradient-dark mb-3" href="{{ route('distributors.create') }}"><i
+                                    class="fas fa-plus"></i>&nbsp;&nbsp;Add New Dustributor</a>
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
@@ -163,126 +161,131 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             Phone Number</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $no => $data)
-                                    <tr>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $no + 1 }}.
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->name }}
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->address }}
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            {{ $data->phone_number }}
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-8">
-                                            <a href="{{ route('distributors.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <form action="{{ route('distributors.destroy', $data->id) }}" method="POST" class="d-inline delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger btn-delete" data-name="{{ $data->name }}">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                        <tr>
+                                            <td class="text-xs font-weight-bold mb-8">
+                                                {{ $no + 1 }}.
+                                            </td>
+                                            <td class="text-xs font-weight-bold mb-8">
+                                                {{ $data->name }}
+                                            </td>
+                                            <td class="text-xs font-weight-bold mb-8">
+                                                {{ $data->address }}
+                                            </td>
+                                            <td class="text-xs font-weight-bold mb-8">
+                                                {{ $data->phone_number }}
+                                            </td>
+                                            <td class="text-xs font-weight-bold mb-8">
+                                                <a href="{{ route('distributors.edit', $data->id) }}"
+                                                    class="btn btn-sm btn-warning">Edit</a>
+                                                <form action="{{ route('distributors.destroy', $data->id) }}"
+                                                    method="POST" class="d-inline delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                                        data-name="{{ $data->name }}">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        
+                                        @endforeach
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <footer class="footer pt-3  ">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-content-lg-between">
+                        <div class="col-lg-6 mb-lg-0 mb-4">
+                            <div class="copyright text-center text-sm text-muted text-lg-start">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>,
+                                made with <i class="fa fa-heart"></i> by
+                                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative
+                                    Tim</a>
+                                for a better web.
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com" class="nav-link text-muted"
+                                        target="_blank">Creative Tim</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
+                                        target="_blank">About Us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
+                                        target="_blank">Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                                        target="_blank">License</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <footer class="footer pt-3  ">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div class="copyright text-center text-sm text-muted text-lg-start">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>,
-                            made with <i class="fa fa-heart"></i> by
-                            <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative
-                                Tim</a>
-                            for a better web.
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com" class="nav-link text-muted"
-                                    target="_blank">Creative Tim</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
-                                    target="_blank">About Us</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
-                                    target="_blank">Blog</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                                    target="_blank">License</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-@endsection
+    @endsection
 
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'Success',
-        text: '{{ session('success') }}',
-        icon: 'success',
-        confirmButtonText: 'OK'
-    });
-</script>
-@endif
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
 
-<script>
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const form = this.closest('form');
-            const name = this.getAttribute('data-name');
+        <script>
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const form = this.closest('form');
+                    const name = this.getAttribute('data-name');
 
-            Swal.fire({
-                title: 'Do you want to delete this distributor ' + name + '?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-            }).then(result => {
-                if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'This action cannot be undone.',
-                        icon: 'question',
+                        title: 'Do you want to delete this distributor ' + name + '?',
+                        icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'Cancel'
-                    }).then(second => {
-                        if (second.isConfirmed) {
-                            form.submit();
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: 'This action cannot be undone.',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'Cancel'
+                            }).then(second => {
+                                if (second.isConfirmed) {
+                                    form.submit();
+                                }
+                            });
                         }
                     });
-                }
+                });
             });
-        });
-    });
-</script>
-@endpush
+        </script>
+    @endpush
