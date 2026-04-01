@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
 
         // CHANGED: Use string() to match the 'note_number' column type
-        $table->string('note_number_purchase', 15)->nullable();
+        $table->string('note_number_purchase', 20)->nullable();
 
         // CHANGED: Use string() to match the 'serial_number' column type
         $table->string('serial_number_product', 10)->nullable();

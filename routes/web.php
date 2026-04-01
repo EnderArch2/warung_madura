@@ -7,6 +7,7 @@ use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/distributors', DistributorController::class);
     Route::resource('/users', UserController::class);
+
+    // Purchase (read-only, for supplier / inventory management)
+    Route::resource('purchases', PurchaseController::class, ['except' => ['edit', 'update']]);
 
     // Sale CRUD (for cashier / transaction entry)
     Route::resource('sales', \App\Http\Controllers\SaleController::class);
