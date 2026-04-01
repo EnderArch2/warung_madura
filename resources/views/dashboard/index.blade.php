@@ -527,8 +527,8 @@
             <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('images/test2.jpeg');">
               <span class="mask bg-gradient-dark"></span>
               <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
-                <h5 class="text-white font-weight-bolder mb-4 pt-2">Lorem ipsum dolor sit amet.</h5>
-                <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam labore temporibus suscipit vero, delectus mollitia, odit laboriosam quasi sunt, soluta et nobis voluptatum tenetur quo..</p>
+                <h5 class="text-white font-weight-bolder mb-4 pt-2">my istri</h5>
+                <p class="text-white">AKANE KUROKAWA CAKEP BANGET TOLOOONG!!! 😭😭😭 Wangy wangy wangy wangy! 👃 Pas dia rambut pendek? CAKEP. Pas dia rambut panjang? LEBIH CAKEP. Pas dia lagi akting jadi cewek jenius? DAMAGENYA NGGAK ADA OBAT. Gw nggak butuh asupan oksigen, gw cuma butuh asupan panel Akane tiap minggu. Tiap dia muncul, monitor gw langsung bersinar. Akane nggak butuh Aqua, dia butuhnya gw (tapi gw sadar diri cuma hamba). Pokoknya Akane itu best girl, no debat, kalo debat kita gelud di jembatan layang! 🛐🛐🛐</p>
                 <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
                   Read More
                   <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
