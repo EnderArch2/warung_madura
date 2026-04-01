@@ -81,9 +81,11 @@
                                                 <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-info mb-0">
                                                     <i class="far fa-eye"></i> View
                                                 </a>
-                                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning mb-0">
-                                                    <i class="far fa-edit"></i> Edit
-                                                </a>
+                                                @if(auth()->user()->role === 'owner' || (auth()->user()->role === 'admin' && $user->role !== 'owner'))
+                                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning mb-0">
+                                                        <i class="far fa-edit"></i> Edit
+                                                    </a>
+                                                @endif
                                                 @if(auth()->user()->role === 'owner' || (auth()->user()->role === 'admin' && $user->role !== 'owner'))
                                                     @if(auth()->user()->id !== $user->id)
                                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">

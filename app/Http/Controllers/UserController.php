@@ -35,6 +35,30 @@ class UserController extends Controller
         if ($authUser->id === $user->id) {
             return true;
         }
+        abort(403, 'Unauthorized access');
+    }
+
+    /**
+     * Check if current user can edit a specific user
+     */
+    private function authorizeEditUser(User $user)
+    {
+        $authUser = auth()->user();
+
+        // Owner can edit any user
+        if ($authUser->role === 'owner') {
+            return true;
+        }
+
+        // Admin can edit any user except owner
+        if ($authUser->role === 'admin' && $user->role !== 'owner') {
+            return true;
+        }
+
+        // User can edit their own profile
+        if ($authUser->id === $user->id) {
+            return true;
+        }
 
         abort(403, 'Unauthorized access');
     }
@@ -110,7 +134,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        $this->authorizeViewUser($user);
+        $this->authorizeEditUser($user);
 
         $authUser = auth()->user();
         $roles = ['owner' => 'Owner', 'admin' => 'Admin', 'courier' => 'Courier', 'customer' => 'Customer'];
@@ -134,7 +158,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
-        $this->authorizeViewUser($user);
+        $this->authorizeEditUser($user);
 
         $authUser = auth()->user();
 
