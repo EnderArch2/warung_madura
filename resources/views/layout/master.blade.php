@@ -45,6 +45,8 @@
         @yield('dashboard')
     @elseif ($title == 'Distributors')
         @yield('distributors')
+    @elseif ($title == 'Couriers')
+        @yield('couriers')
     @elseif ($title == 'Products')
         @yield('products')
     @elseif ($title == 'Purchases')

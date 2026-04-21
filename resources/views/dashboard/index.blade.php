@@ -122,6 +122,20 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
+      {{-- Show welcome message for courier users --}}
+      @if(auth()->user()->role === 'courier')
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body p-4">
+              <h5 class="font-weight-bolder mb-3">Welcome, {{ auth()->user()->name }}!</h5>
+              <p class="text-sm mb-0">You have access to the Distributor and Courier sections. Use the menu to navigate to manage distributors and courier information.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      @else
+      {{-- Show stat cards for admin and owner --}}
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
@@ -239,7 +253,9 @@
           </div>
         </div>
       </div>
+      @endif
 
+      @if(auth()->user()->role !== 'courier')
       <div class="row mt-4">
         <div class="col-lg-5 mb-lg-0 mb-4">
           <div class="card z-index-2">
@@ -539,6 +555,7 @@
         </div>
 
       </div>
+      @endif
       <footer class="footer pt-3  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">

@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\CourierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,10 +39,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('welcome');
-    });
+    })->name('home');
 
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/distributors', DistributorController::class);
+    Route::resource('/couriers', CourierController::class);
     Route::resource('/users', UserController::class);
 
     // Purchase (read-only, for supplier / inventory management)

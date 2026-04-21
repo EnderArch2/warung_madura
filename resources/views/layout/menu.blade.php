@@ -1,5 +1,6 @@
 <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
+        {{-- Dashboard - visible to all authenticated users --}}
         <li class="nav-item">
             <a class="nav-link  @if ($title === 'Dashboard') active @endif" href="{{route('dashboard.index') }}">
                 <div
@@ -13,6 +14,9 @@
                 <span class="nav-link-text ms-1">Dashboard</span>
             </a>
         </li>
+
+        {{-- Products - hidden from courier --}}
+        @if(auth()->user()->role == 'owner')
         <li class="nav-item">
             <a class="nav-link @if ($title === 'Products') active @endif" href="{{ route('products.index') }}">
                 <div
@@ -30,6 +34,7 @@
                 <span class="nav-link-text ms-1">Products</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link  " href="../pages/tables.html">
                 <div
@@ -44,6 +49,7 @@
                 <span class="nav-link-text ms-1">Clients</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link @if ($title === 'Purchases') active @endif" href="{{ route('purchases.index') }}">
                 <div
@@ -70,6 +76,7 @@
                 <span class="nav-link-text ms-1">Purchase</span>
             </a>
         </li>
+        @endif
         <li class="nav-item">
             <a class="nav-link  " href="../pages/rtl.html">
                 <div
@@ -97,6 +104,7 @@
                 <span class="nav-link-text ms-1">Sale</span>
             </a>
         </li>
+        @if(auth()->user()->role == 'owner')
         <li class="nav-item">
             <a class="nav-link @if ($title === 'Distributors') active @endif" href="{{route('distributors.index') }}">
                 <div
@@ -110,19 +118,21 @@
                 <span class="nav-link-text ms-1">Distributor</span>
             </a>
         </li>
+        @endif
         <li class="nav-item">
-            <a class="nav-link  " href="../pages/rtl.html">
+            <a class="nav-link @if ($title === 'Couriers') active @endif" href="{{ route('couriers.index') }}">
                 <div
                     class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#67748e"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@if ($title === 'Couriers') white @else #67748e @endif"
                         class="bi bi-bicycle" viewBox="0 0 16 16">
                         <path
                             d="M4 4.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1v.5h4.14l.386-1.158A.5.5 0 0 1 11 4h1a.5.5 0 0 1 0 1h-.64l-.311.935.807 1.29a3 3 0 1 1-.848.53l-.508-.812-2.076 3.322A.5.5 0 0 1 8 10.5H5.959a3 3 0 1 1-1.815-3.274L5 5.856V5h-.5a.5.5 0 0 1-.5-.5m1.5 2.443-.508.814c.5.444.85 1.054.967 1.743h1.139zM8 9.057 9.598 6.5H6.402zM4.937 9.5a2 2 0 0 0-.487-.877l-.548.877zM3.603 8.092A2 2 0 1 0 4.937 10.5H3a.5.5 0 0 1-.424-.765zm7.947.53a2 2 0 1 0 .848-.53l1.026 1.643a.5.5 0 1 1-.848.53z" />
                     </svg>
                 </div>
-                <span class="nav-link-text ms-1">Courier</span>
+                <span class="nav-link-text ms-1">Couriers</span>
             </a>
         </li>
+        @if(auth()->user()->role == 'owner')
         <li class="nav-item">
             <a class="nav-link @if ($title === 'Users' || str_contains($title, 'User')) active @endif" href="{{ route('users.index') }}">
                 <div
@@ -135,6 +145,7 @@
                 <span class="nav-link-text ms-1">Users</span>
             </a>
         </li>
+        @endif
         <li class="nav-item mt-3">
             <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">REPORTS</h6>
         </li>

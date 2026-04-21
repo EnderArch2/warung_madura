@@ -140,7 +140,7 @@
                 You are logged in as <strong>{{ ucfirst(auth()->user()->role) }}</strong>
             </div>
             <div>
-                <a href="{{ route('users.index') }}" class="dashboard-btn">
+                <a href="{{ route('dashboard.index') }}" class="dashboard-btn">
                     Go to Dashboard
                 </a>
             </div>

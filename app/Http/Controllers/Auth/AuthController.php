@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('users.index'))->with('success', 'Welcome back!');
+            return redirect()->intended(route('home'))->with('success', 'Welcome back!');
         }
 
         return back()->withErrors([
@@ -70,7 +70,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('users.index'))->with('success', 'Account created successfully! Welcome to Warung Madura.');
+        return redirect(route('home'))->with('success', 'Account created successfully! Welcome to Warung Madura.');
     }
 
     /**
