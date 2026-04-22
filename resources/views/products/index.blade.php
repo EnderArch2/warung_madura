@@ -82,7 +82,7 @@
                                 The SweetAlert2 popup below handles this more elegantly,
                                 but this inline alert is a fallback for non-JS browsers.
                             --}}
-                            @if(session('success'))
+                            @if (session('success'))
                                 <div class="alert alert-success mx-4 mt-3" role="alert">
                                     {{ session('success') }}
                                 </div>
@@ -91,14 +91,33 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">No.</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Serial No.</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Product Name</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stock</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expiry Date</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            No.</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Serial No.</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Product Name</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Type</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Price</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Stock</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Expiry Date</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Product Images</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,7 +135,8 @@
                                         <tr>
                                             <td class="text-xs font-weight-bold mb-0 ps-2">{{ $loop->iteration }}.</td>
                                             <td class="text-xs font-weight-bold mb-0">
-                                                <span class="badge badge-sm bg-gradient-secondary">{{ $product->serial_number }}</span>
+                                                <span
+                                                    class="badge badge-sm bg-gradient-secondary">{{ $product->serial_number }}</span>
                                             </td>
                                             <td class="text-xs font-weight-bold mb-0">{{ $product->name }}</td>
                                             <td class="text-xs font-weight-bold mb-0">{{ $product->type }}</td>
@@ -126,9 +146,11 @@
                                             <td class="text-xs font-weight-bold mb-0">
                                                 {{-- Visual indicator: red badge for low stock (≤5), green for normal --}}
                                                 @if ($product->stock <= 5)
-                                                    <span class="badge badge-sm bg-gradient-danger">{{ $product->stock }}</span>
+                                                    <span
+                                                        class="badge badge-sm bg-gradient-danger">{{ $product->stock }}</span>
                                                 @else
-                                                    <span class="badge badge-sm bg-gradient-success">{{ $product->stock }}</span>
+                                                    <span
+                                                        class="badge badge-sm bg-gradient-success">{{ $product->stock }}</span>
                                                 @endif
                                             </td>
                                             <td class="text-xs font-weight-bold mb-0">
@@ -139,11 +161,29 @@
                                                 --}}
                                                 {{ $product->expiration_date ? $product->expiration_date->format('d M Y') : '-' }}
                                             </td>
+                                            <td>
+                                                @if ($product->picture)
+                                                    <div class="mb-2">
+                                                        <img src="{{ asset('storage/' . $product->picture) }}"
+                                                            alt="{{ $product->name }}"
+                                                            style="height: 80px; border-radius: 8px; object-fit: cover;">
+                                                    </div>
+                                                @else
+                                                    <div class="mb-2">
+                                                        no image
+                                                    </div>
+                                                @endif
+                                                @error('picture')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </td>
                                             <td class="text-xs font-weight-bold mb-0">
-                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">
+                                                <a href="{{ route('products.edit', $product->id) }}"
+                                                    class="btn btn-sm btn-warning">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
-                                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline delete-form">
+                                                <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                                    class="d-inline delete-form">
                                                     @csrf
                                                     {{--
                                                         @method('DELETE') outputs: <input type="hidden" name="_method" value="DELETE">
@@ -162,7 +202,8 @@
                                         {{-- @forelse/@empty: shows this row when $products is empty --}}
                                         <tr>
                                             <td colspan="8" class="text-center py-4 text-muted">
-                                                No products found. <a href="{{ route('products.create') }}">Add your first product →</a>
+                                                No products found. <a href="{{ route('products.create') }}">Add your first
+                                                    product →</a>
                                             </td>
                                         </tr>
                                     @endforelse
@@ -189,8 +230,12 @@
                 <div class="row align-items-center justify-content-lg-between">
                     <div class="col-lg-6 mb-lg-0 mb-4">
                         <div class="copyright text-center text-sm text-muted text-lg-start">
-                            © <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart"></i> by
-                            <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>, made with <i class="fa fa-heart"></i> by
+                            <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative
+                                Tim</a>
                         </div>
                     </div>
                 </div>
@@ -200,49 +245,49 @@
 @endsection
 
 @push('scripts')
-{{-- SweetAlert2 CDN — used for prettier delete confirmation dialogs --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- SweetAlert2 CDN — used for prettier delete confirmation dialogs --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{-- Show success toast popup if the session has a 'success' flash message --}}
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'Success!',
-        text: '{{ session('success') }}',
-        icon: 'success',
-        timer: 3000,
-        showConfirmButton: false
-    });
-</script>
-@endif
+    {{-- Show success toast popup if the session has a 'success' flash message --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 
-{{--
+    {{--
     DELETE CONFIRMATION — Two-step SweetAlert confirmation before deleting.
     WHY two steps?
     Accidental deletion is one of the most common user mistakes. A double
     confirmation significantly reduces accidental destructive actions.
 --}}
-<script>
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const form = this.closest('form');
-            const name = this.getAttribute('data-name');
+    <script>
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const form = this.closest('form');
+                const name = this.getAttribute('data-name');
 
-            Swal.fire({
-                title: 'Delete "' + name + '"?',
-                text: 'This action cannot be undone.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then(result => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                Swal.fire({
+                    title: 'Delete "' + name + '"?',
+                    text: 'This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endpush

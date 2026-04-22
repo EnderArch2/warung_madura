@@ -1,3 +1,4 @@
+
 <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
         {{-- Dashboard - visible to all authenticated users --}}

@@ -59,7 +59,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming array of products
+        // validasi data
         $request->validate([
             'purchase_date'       => 'required|date',
             'distributor_id'      => 'required|integer|exists:distributors,id',

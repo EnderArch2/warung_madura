@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SaleReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,11 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('purchases', PurchaseController::class, ['except' => ['edit', 'update']]);
 
     // Sale CRUD (for cashier / transaction entry)
-    Route::resource('sales', \App\Http\Controllers\SaleController::class);
+    Route::resource('sales', SaleController::class);
 
     // Sale Reports (for manager / analytical view)
-    Route::get('sale-reports', [\App\Http\Controllers\SaleReportController::class, 'index'])->name('sale-reports.index');
+    Route::get('sale-reports', [SaleReportController::class, 'index'])->name('sale-reports.index');
 
-    Route::resource('products', \App\Http\Controllers\ProductController::class);
+    Route::resource('products', ProductController::class);
     Route::get('/test', [TestController::class, 'index']);
 });
